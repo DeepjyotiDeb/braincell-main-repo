@@ -1,0 +1,26 @@
+.loginpoup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.2 );
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginpoup-inner{
+    position: relative;
+    padding: 32px;
+    width: 100%;
+    max-width: 500px;
+    background-color: wheat;
+}
+
+.loginpoup-inner .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}
