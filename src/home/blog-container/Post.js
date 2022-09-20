@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 export default function Post(props) {
   const postData = props.postData;
-  console.log('data', postData);
 
   return (
     <Box m={3}>

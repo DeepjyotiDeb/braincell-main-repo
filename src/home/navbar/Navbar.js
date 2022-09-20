@@ -75,7 +75,7 @@ export default function Navbar() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ width: '100%' }}>
       <AppBar
         position='static'
         sx={{ backgroundColor: '#02b7cb' }}
@@ -92,7 +92,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+            <Typography variant='h6' component='div'>
               Braincell
             </Typography>
           </Link>
@@ -155,7 +155,7 @@ export default function Navbar() {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem button component='a' href='/'>
+          <ListItem component='a' href='/'>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -165,11 +165,11 @@ export default function Navbar() {
             <></>
           ) : (
             <>
-              <ListItem button component='a' href='/create-post'>
+              <ListItem type='Button' component='a' href='/create-post'>
                 <ListItemIcon>
                   <CreateIcon />
                 </ListItemIcon>
-                <ListItemText primary='Create Post' />
+                <ListItemText button primary='Create Post' />
               </ListItem>
               <ListItem button component='a' href='/my-posts'>
                 <ListItemIcon>

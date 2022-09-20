@@ -6,11 +6,11 @@ import {
   Button,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import axios from '../../api/axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import moment from 'moment';
+import axios from '../../api/axios';
 
 export default function SinglePost() {
   const navigate = useNavigate();
@@ -30,25 +30,22 @@ export default function SinglePost() {
       .then(() => navigate('/'));
   };
 
-  // mount
   useEffect(() => {
     setTimeout(() => {
       axios
-        .get(`/get-post/${id}`)
+        .get(`/blogs/${id}`)
         .then(function (response) {
-          // handle success
-          setPost(response.data.post);
+          setPost(response.data.blog);
           setDone(true);
         })
         .catch(function (error) {
-          // handle error
           console.log(error);
         });
     }, 10);
   }, [id]);
 
   const SuperButton = () => {
-    if (post.user_id === localStorage.getItem('user_id')) {
+    if (post.userId._id === localStorage.getItem('user_id')) {
       return (
         <>
           <Button variant='contained' color='success'>
@@ -65,7 +62,7 @@ export default function SinglePost() {
         </>
       );
     } else {
-      // return(console.log("empty"))
+      return null;
     }
   };
 
@@ -88,21 +85,34 @@ export default function SinglePost() {
           />
         </div>
       ) : (
-        <Container maxWidth='lg' sx={{ margin: 3 }}>
+        <Container
+          maxWidth='lg'
+          sx={{
+            margin: 'auto',
+            marginTop: 3,
+            width: { lg: '1000px', md: '800px', xs: '600px' },
+          }}
+        >
           <Card>
-            <CardContent>
+            <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography variant='h5'>{post.title}</Typography>
               <Typography variant='body1' sx={{ fontWeight: '500', pl: 0.3 }}>
                 {post.summary}
               </Typography>
-              <Typography variant='caption' sx={{ pl: 0.3 }}>
-                Created on{' '}
-                {moment(post.created_on).format('MMMM Do YYYY, h:mm a')}
-              </Typography>
-              <div dangerouslySetInnerHTML={{ __html: post.body }} />
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Typography variant='caption' sx={{ pl: 0.3 }}>
+                  Created on{' '}
+                  {moment(post.createdAt).format('MMMM Do YYYY, h:mm a')}
+                </Typography>{' '}
+                <Typography variant='caption' sx={{ mt: 0 }}>
+                  By {post.userId.name}
+                </Typography>
+              </div>
+              <Typography>{post.description}</Typography>
+              {/* <div dangerouslySetInnerHTML={{ __html: post.body }} /> */}
             </CardContent>
           </Card>
-          {SuperButton()}
+          <SuperButton />
         </Container>
       )}
     </>
