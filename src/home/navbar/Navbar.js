@@ -96,7 +96,20 @@ export default function Navbar() {
               Braincell
             </Typography>
           </Link>
-          {!token ? (
+          {token ? (
+            <StyledButton
+              color='inherit'
+              variant='outlined'
+              sx={{ position: 'absolute', right: '5px' }}
+              onClick={() => {
+                localStorage.removeItem('id');
+                localStorage.removeItem('token');
+                navigate('/');
+              }}
+            >
+              Logout
+            </StyledButton>
+          ) : (
             <>
               <StyledButton
                 color='inherit'
@@ -115,19 +128,6 @@ export default function Navbar() {
                 SignUp
               </StyledButton>
             </>
-          ) : (
-            <StyledButton
-              color='inherit'
-              variant='outlined'
-              sx={{ position: 'absolute', right: '5px' }}
-              onClick={() => {
-                localStorage.removeItem('id');
-                localStorage.removeItem('token');
-                navigate('/');
-              }}
-            >
-              Logout
-            </StyledButton>
           )}
         </Toolbar>
       </AppBar>
