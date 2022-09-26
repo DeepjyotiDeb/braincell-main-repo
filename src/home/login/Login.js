@@ -42,10 +42,10 @@ export default function Login(props) {
   // }
 
   const handleLoginSuccess = (res) => {
-    // if(console.log(res.statusText)=="success")
+    console.log({ res });
     if (res !== '') {
-      localStorage.setItem('access_token', res.data.access_token);
-      localStorage.setItem('user_id', res.data.user_details.user_id);
+      localStorage.setItem('token', res.data.user.token);
+      localStorage.setItem('id', res.data.user.id);
       navigate('/');
       handleClose();
       setError(null);
@@ -59,15 +59,10 @@ export default function Login(props) {
   const handleSubmit = () => {
     //     console.log('test values are:', username, password);
     axios
-      .post(
-        'login',
-        `grant_type=&username=${username}&password=${password}&scope=&client_id=&client_secret=`,
-        {
-          headers: {
-            'content-type': 'application/x-www-form-urlencoded',
-          },
-        }
-      )
+      .post('/login', {
+        'username': username,
+        'password': password,
+      })
       .then(handleLoginSuccess)
       // .then(() => navigate('/'))
       .catch((error) => {

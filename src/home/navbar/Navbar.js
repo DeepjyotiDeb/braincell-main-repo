@@ -121,8 +121,8 @@ export default function Navbar() {
               variant='outlined'
               sx={{ position: 'absolute', right: '5px' }}
               onClick={() => {
-                localStorage.removeItem('user_id');
-                localStorage.removeItem('access_token');
+                localStorage.removeItem('id');
+                localStorage.removeItem('token');
                 navigate('/');
               }}
             >
@@ -157,7 +157,12 @@ export default function Navbar() {
         <Divider />
         <List>
           <ListItem>
-            <ListItemButton onClick={() => navigate('/')}>
+            <ListItemButton
+              onClick={() => {
+                navigate('/');
+                handleDrawerClose();
+              }}
+            >
               <HomeIcon />
               <ListItemText primary='Home' sx={{ pl: 1 }} />
             </ListItemButton>
@@ -165,13 +170,23 @@ export default function Navbar() {
           {token && (
             <>
               <ListItem>
-                <ListItemButton onClick={() => navigate('/create-post')}>
+                <ListItemButton
+                  onClick={() => {
+                    navigate('/create-post');
+                    handleDrawerClose();
+                  }}
+                >
                   <CreateIcon />
                   <ListItemText primary='Create Post' sx={{ pl: 1 }} />
                 </ListItemButton>
               </ListItem>
               <ListItem>
-                <ListItemButton onClick={() => navigate('/my-posts')}>
+                <ListItemButton
+                  onClick={() => {
+                    navigate('/my-posts');
+                    handleDrawerClose();
+                  }}
+                >
                   <PersonSharpIcon />
                   <ListItemText primary='My Posts' sx={{ pl: 1 }} />
                 </ListItemButton>

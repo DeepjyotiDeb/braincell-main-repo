@@ -17,20 +17,21 @@ import DOMPurify from 'isomorphic-dompurify';
 
 export default function SinglePost() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
   const { id } = useParams(); // Reads the URL on the URL Bar and gets whatever is after ":"
   const [post, setPost] = useState({});
   const [done, setDone] = useState(undefined);
 
   const handleDelete = () => {
+    console.log('id', id);
     axios
-      .delete(`/delete-post/${id}`, {
-        json: true,
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-        },
+      .delete(`blog/${id}/delete`, {
+        data: { id: id },
+        headers: { 'Authorization': token },
       })
       .then((response) => console.log(response))
-      .then(() => navigate('/'));
+      .then(() => navigate('/'))
+      .catch((err) => console.log({ err }));
   };
 
   const handleSanitize = (data) => ({
@@ -52,12 +53,23 @@ export default function SinglePost() {
   }, [id]);
 
   const SuperButton = () => {
-    if (post.userId._id === localStorage.getItem('user_id')) {
+    if (
+      post.userId._id === localStorage.getItem('id') &&
+      localStorage.getItem('token')
+    ) {
       return (
-        <>
-          <Button variant='contained' color='success'>
+        <Box
+          sx={{
+            m: 1,
+            ml: 0,
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 1,
+          }}
+        >
+          <Button variant='contained'>
             <Link
-              to={`/update-post/${post.id}`}
+              to={`/edit-post/${post._id}`}
               style={{ textDecoration: 'none', color: 'inherit' }}
             >
               edit post{' '}
@@ -66,7 +78,7 @@ export default function SinglePost() {
           <Button variant='contained' color='error' onClick={handleDelete}>
             delete post
           </Button>
-        </>
+        </Box>
       );
     } else {
       return null;

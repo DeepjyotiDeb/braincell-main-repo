@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from '../../api/axios';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default function MakePost() {
   let navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+  const userId = localStorage.getItem('id');
+  const token = localStorage.getItem('token');
+
   const [values, setValues] = useState({});
   const editorConfig = {
     // toolbar: ['bold', 'italic'],
-    width: '20vh',
     shouldNotGroupWhenFull: true,
+    width: '800px',
   };
 
   const handleChange = (event) => {
@@ -27,24 +32,68 @@ export default function MakePost() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('here are values', values);
+    if (location.pathname.includes('edit-post')) {
+      axios
+        .patch(
+          `/blog/${id}/update`,
+          {
+            'id': id,
+            'title': values.title,
+            'summary': values.summary,
+            'description': values.body,
+          },
+          {
+            headers: {
+              'Authorization': token,
+            },
+          }
+        )
+        .then((res) => {
+          console.log({ res });
+          navigate('/');
+        })
+        .catch((err) => {});
+      return;
+    }
     axios
       .post(
         `/createBlog`,
         {
-          'userId': `${localStorage.getItem('id')}`,
+          'userId': userId,
           'title': values.title,
           'summary': values.summary,
           'description': values.body,
         },
         {
           headers: {
-            'Authorization': `${localStorage.getItem('token')}`,
+            'Authorization': token,
           },
         }
       )
       .then((res) => console.log(res))
       .then(() => navigate('/'));
   };
+
+  useEffect(() => {
+    if (location.pathname.includes('edit-post')) {
+      console.log('true');
+      setTimeout(() => {
+        axios
+          .get(`/blogs/${id}`)
+          .then(function (response) {
+            console.log('response', response);
+            setValues({
+              title: response.data.blog.title,
+              summary: response.data.blog.summary,
+              body: response.data.blog.description,
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }, 0);
+    }
+  }, [id, location.pathname]);
 
   return (
     <Box
@@ -58,41 +107,61 @@ export default function MakePost() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '741px',
+        width: { xs: '400px', sm: '700px', md: '900px' },
         margin: 'auto',
         gap: '5px',
       }}
     >
       <TextField
-        onChange={handleChange}
-        id='outlined-textarea'
-        label='Title'
+        placeholder='Title'
         name='title'
         multiline
         fullWidth
         value={values.title}
+        onChange={handleChange}
       />
 
       <TextField
-        id='outlined-textarea2'
-        onChange={handleChange}
-        label='Summary'
+        placeholder='Summary'
         name='summary'
         fullWidth
         multiline
         value={values.summary}
+        onChange={handleChange}
       />
       <CKEditor
         className='ck-content'
         editor={ClassicEditor}
+        data={values.body}
         config={editorConfig}
         onChange={(event, editor) => {
           const data = editor.getData();
           handleChange(data);
         }}
+        onReady={(editor) => {
+          // You can store the "editor" and use when it is needed.
+          // console.log('Editor is ready to use!', editor);
+          editor.editing.view.change((writer) => {
+            writer.setStyle(
+              'min-width',
+              '880px',
+              editor.editing.view.document.getRoot()
+            );
+            writer.setStyle(
+              'min-height',
+              '20rem',
+              editor.editing.view.document.getRoot()
+            );
+          });
+        }}
       />
 
-      <Button variant='contained' color='primary' onClick={handleSubmit}>
+      <Button
+        variant='contained'
+        color='primary'
+        onClick={handleSubmit}
+        sx={{ mb: 2 }}
+      >
         Submit
       </Button>
     </Box>

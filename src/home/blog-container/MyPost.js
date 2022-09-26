@@ -25,7 +25,6 @@ export default function MyPost() {
         }
       )
       .then((response) => {
-        console.log('my data only', response.data);
         setMyPosts(response.data.userBlogs);
       })
       .catch((error) => {
