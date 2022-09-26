@@ -1,9 +1,11 @@
+/* eslint-disable no-labels */
 import {
   Container,
   Typography,
   Card,
   CardContent,
   Button,
+  Box,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +13,7 @@ import { Link } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import moment from 'moment';
 import axios from '../../api/axios';
+import DOMPurify from 'isomorphic-dompurify';
 
 export default function SinglePost() {
   const navigate = useNavigate();
@@ -18,7 +21,7 @@ export default function SinglePost() {
   const [post, setPost] = useState({});
   const [done, setDone] = useState(undefined);
 
-  const handleSubmit = () => {
+  const handleDelete = () => {
     axios
       .delete(`/delete-post/${id}`, {
         json: true,
@@ -29,6 +32,10 @@ export default function SinglePost() {
       .then((response) => console.log(response))
       .then(() => navigate('/'));
   };
+
+  const handleSanitize = (data) => ({
+    __html: DOMPurify.sanitize(data),
+  });
 
   useEffect(() => {
     setTimeout(() => {
@@ -56,7 +63,7 @@ export default function SinglePost() {
               edit post{' '}
             </Link>
           </Button>
-          <Button variant='contained' color='error' onClick={handleSubmit}>
+          <Button variant='contained' color='error' onClick={handleDelete}>
             delete post
           </Button>
         </>
@@ -93,23 +100,33 @@ export default function SinglePost() {
             width: { lg: '1000px', md: '800px', xs: '600px' },
           }}
         >
-          <Card>
-            <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Card sx={{ pb: 0, mb: 0 }}>
+            <CardContent
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                paddingBottom: 0,
+                mb: 0,
+                '&.MuiCardContent-root': {
+                  pb: 0,
+                },
+              }}
+            >
               <Typography variant='h5'>{post.title}</Typography>
               <Typography variant='body1' sx={{ fontWeight: '500', pl: 0.3 }}>
                 {post.summary}
               </Typography>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Typography variant='caption' sx={{ pl: 0.3 }}>
                   Created on{' '}
-                  {moment(post.createdAt).format('MMMM Do YYYY, h:mm a')}
-                </Typography>{' '}
-                <Typography variant='caption' sx={{ mt: 0 }}>
-                  By {post.userId.name}
+                  {moment(post.createdAt).format('MMMM Do YYYY, h:mm a')} by{' '}
+                  {post.userId.name}
                 </Typography>
-              </div>
-              <Typography>{post.description}</Typography>
-              {/* <div dangerouslySetInnerHTML={{ __html: post.body }} /> */}
+              </Box>
+              <Typography
+                dangerouslySetInnerHTML={handleSanitize(post.description)}
+                sx={{ p: 0, m: 0 }}
+              />
             </CardContent>
           </Card>
           <SuperButton />

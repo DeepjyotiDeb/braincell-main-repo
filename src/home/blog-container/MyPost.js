@@ -7,17 +7,26 @@ import axios from '../../api/axios';
 
 export default function MyPost() {
   const [myPosts, setMyPosts] = useState([]);
-  let uid = localStorage.getItem('user_id');
+  let uid = localStorage.getItem('id');
 
   useEffect(() => {
     // console.log("these are my posts")
     // console.log(uid)
     axios
-      .get(`/get-user/${uid}`)
+      .post(
+        `/blogsByUser`,
+        {
+          'userId': uid,
+        },
+        {
+          headers: {
+            'Authorization': `${localStorage.getItem('token')}`,
+          },
+        }
+      )
       .then((response) => {
-        // console.log('my data only', response.data);
-        setMyPosts(response.data.blogs);
-        // console.log(response.data.blogs)
+        console.log('my data only', response.data);
+        setMyPosts(response.data.userBlogs);
       })
       .catch((error) => {
         console.log(error);
@@ -25,7 +34,7 @@ export default function MyPost() {
   }, [uid]);
 
   const postComponents = myPosts.map((item) => {
-    return <Post key={item.id} postData={item}></Post>;
+    return <Post key={item._id} postData={item}></Post>;
   });
   return <Container maxWidth='lg'>{postComponents}</Container>;
 }

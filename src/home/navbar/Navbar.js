@@ -13,11 +13,10 @@ import Divider from '@mui/material/Divider';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
 import CreateIcon from '@mui/icons-material/Create';
-import { Button } from '@mui/material';
+import { Button, ListItemButton } from '@mui/material';
 import Login from '../login/Login';
 import PersonSharpIcon from '@mui/icons-material/PersonSharp';
 import SignUp from '../signup/SignUp';
@@ -62,7 +61,8 @@ const StyledButton = styled(Button)(() => ({
 
 export default function Navbar() {
   const theme = useTheme();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const token = localStorage.getItem('token');
   const [open, setOpen] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
   const [openSignUp, setOpenSignUp] = useState(false);
@@ -96,7 +96,7 @@ export default function Navbar() {
               Braincell
             </Typography>
           </Link>
-          {!localStorage.getItem('access_token') ? (
+          {!token ? (
             <>
               <StyledButton
                 color='inherit'
@@ -143,6 +143,7 @@ export default function Navbar() {
         variant='temporary'
         anchor='left'
         open={open}
+        onClose={handleDrawerClose}
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -155,27 +156,25 @@ export default function Navbar() {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItem component='a' href='/'>
-            <ListItemIcon>
+          <ListItem>
+            <ListItemButton onClick={() => navigate('/')}>
               <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary='Home' />
+              <ListItemText primary='Home' sx={{ pl: 1 }} />
+            </ListItemButton>
           </ListItem>
-          {!localStorage.getItem('access_token') ? (
-            <></>
-          ) : (
+          {token && (
             <>
-              <ListItem type='Button' component='a' href='/create-post'>
-                <ListItemIcon>
+              <ListItem>
+                <ListItemButton onClick={() => navigate('/create-post')}>
                   <CreateIcon />
-                </ListItemIcon>
-                <ListItemText button primary='Create Post' />
+                  <ListItemText primary='Create Post' sx={{ pl: 1 }} />
+                </ListItemButton>
               </ListItem>
-              <ListItem button component='a' href='/my-posts'>
-                <ListItemIcon>
+              <ListItem>
+                <ListItemButton onClick={() => navigate('/my-posts')}>
                   <PersonSharpIcon />
-                </ListItemIcon>
-                <ListItemText primary='My Posts' />
+                  <ListItemText primary='My Posts' sx={{ pl: 1 }} />
+                </ListItemButton>
               </ListItem>
             </>
           )}
