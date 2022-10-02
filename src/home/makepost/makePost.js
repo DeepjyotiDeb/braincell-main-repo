@@ -16,9 +16,14 @@ export default function MakePost() {
 
   const [values, setValues] = useState({});
   const editorConfig = {
-    // toolbar: ['bold', 'italic'],
+    toolbar: ['bold', 'italic'],
     shouldNotGroupWhenFull: true,
     width: '800px',
+    style: {
+      '&.ck-editor &.ck': {
+        width: '100%',
+      },
+    },
   };
 
   const handleChange = (event) => {
@@ -130,7 +135,12 @@ export default function MakePost() {
         onChange={handleChange}
       />
       <CKEditor
-        className='ck-content'
+        style={{
+          '&.ck-editor &.ck': {
+            width: '100%',
+          },
+        }}
+        // className='ck-content'
         editor={ClassicEditor}
         data={values.body}
         config={editorConfig}
@@ -144,7 +154,7 @@ export default function MakePost() {
           editor.editing.view.change((writer) => {
             writer.setStyle(
               'min-width',
-              '880px',
+              '100%',
               editor.editing.view.document.getRoot()
             );
             writer.setStyle(
