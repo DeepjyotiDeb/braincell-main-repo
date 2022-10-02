@@ -109,7 +109,7 @@ export default function SinglePost() {
           sx={{
             margin: 'auto',
             marginTop: 3,
-            width: { lg: '1000px', md: '800px', xs: '600px' },
+            // width: { lg: '1000px', md: '800px', xs: '600px' },
           }}
         >
           <Card sx={{ pb: 0, mb: 0 }}>

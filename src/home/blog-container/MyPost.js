@@ -62,7 +62,7 @@ export default function MyPost() {
       ) : (
         <Container
           maxWidth='lg'
-          sx={{ width: { lg: '1000px', md: '800px', xs: '600px' } }}
+          // sx={{ width: { lg: '1000px', md: '800px', xs: '600px' } }}
         >
           {postComponents}
         </Container>

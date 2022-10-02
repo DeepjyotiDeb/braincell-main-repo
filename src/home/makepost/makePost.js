@@ -13,18 +13,7 @@ export default function MakePost() {
   const { id } = useParams();
   const userId = localStorage.getItem('id');
   const token = localStorage.getItem('token');
-
   const [values, setValues] = useState({});
-  const editorConfig = {
-    toolbar: ['bold', 'italic'],
-    shouldNotGroupWhenFull: true,
-    width: '800px',
-    style: {
-      '&.ck-editor &.ck': {
-        width: '100%',
-      },
-    },
-  };
 
   const handleChange = (event) => {
     if (event.target) {
@@ -100,6 +89,9 @@ export default function MakePost() {
     }
   }, [id, location.pathname]);
 
+  // const editorConfig = {
+  //   toolbar: ['Bold', 'Italic']
+  // }
   return (
     <Box
       component='form'
@@ -112,11 +104,12 @@ export default function MakePost() {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: { xs: '400px', sm: '700px', md: '900px' },
+        width: { xs: '90%', sm: '60%' },
         margin: 'auto',
         gap: '5px',
       }}
     >
+
       <TextField
         placeholder='Title'
         name='title'
@@ -134,36 +127,37 @@ export default function MakePost() {
         value={values.summary}
         onChange={handleChange}
       />
+      <div className="classes.richTextEditor"></div>
       <CKEditor
-        style={{
-          '&.ck-editor &.ck': {
-            width: '100%',
-          },
-        }}
         // className='ck-content'
         editor={ClassicEditor}
         data={values.body}
-        config={editorConfig}
+        // config={editorConfig}
         onChange={(event, editor) => {
           const data = editor.getData();
           handleChange(data);
         }}
-        onReady={(editor) => {
-          // You can store the "editor" and use when it is needed.
-          // console.log('Editor is ready to use!', editor);
-          editor.editing.view.change((writer) => {
-            writer.setStyle(
-              'min-width',
-              '100%',
-              editor.editing.view.document.getRoot()
-            );
-            writer.setStyle(
-              'min-height',
-              '20rem',
-              editor.editing.view.document.getRoot()
-            );
-          });
-        }}
+        // onReady={(editor) => {
+        //   // You can store the "editor" and use when it is needed.
+        //   // console.log('Editor is ready to use!', editor);
+        //   editor.editing.view.change((writer) => {
+        //     writer.setStyle(
+        //       'min-width',
+        //       'inherit',
+        //       editor.editing.view.document.getRoot()
+        //     );
+        //     // writer.setStyle(
+        //     //   'width',
+        //     //   '100%',
+        //     //   editor.editing.view.document.getRoot()
+        //     // );
+        //     // writer.setStyle(
+        //     //   'min-height',
+        //     //   '20rem',
+        //     //   editor.editing.view.document.getRoot()
+        //     // );
+        //   });
+        // }}
       />
 
       <Button

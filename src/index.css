@@ -12,3 +12,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.ck-editor__editable {
+  min-height: 50vh !important;
+}
+.ck.ck-editor {
+  position: relative;
+  width: -webkit-fill-available !important;
+}
