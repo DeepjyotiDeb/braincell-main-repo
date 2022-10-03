@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -70,9 +71,8 @@ export default function MakePost() {
 
   useEffect(() => {
     if (location.pathname.includes('edit-post')) {
-      console.log('true');
-      setTimeout(() => {
-        axios
+      const prefFillPost = async () => {
+        await axios
           .get(`/blogs/${id}`)
           .then(function (response) {
             console.log('response', response);
@@ -85,9 +85,10 @@ export default function MakePost() {
           .catch(function (error) {
             console.log(error);
           });
-      }, 0);
+      };
+      prefFillPost();
     }
-  }, [id, location.pathname]);
+  }, [location.pathname]);
 
   // const editorConfig = {
   //   toolbar: ['Bold', 'Italic']

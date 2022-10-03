@@ -39,8 +39,8 @@ export default function SinglePost() {
   });
 
   useEffect(() => {
-    setTimeout(() => {
-      axios
+    const getSinglePost = async () => {
+      await axios
         .get(`/blogs/${id}`)
         .then(function (response) {
           setPost(response.data.blog);
@@ -49,7 +49,8 @@ export default function SinglePost() {
         .catch(function (error) {
           console.log(error);
         });
-    }, 10);
+    };
+    getSinglePost();
   }, [id]);
 
   const SuperButton = () => {

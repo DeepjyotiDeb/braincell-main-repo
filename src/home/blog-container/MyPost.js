@@ -12,10 +12,8 @@ export default function MyPost() {
   let uid = localStorage.getItem('id');
 
   useEffect(() => {
-    // console.log("these are my posts")
-    // console.log(uid)
-    setTimeout(() => {
-      axios
+    const getMyPost = async () => {
+      await axios
         .post(
           `/blogsByUser`,
           {
@@ -34,7 +32,8 @@ export default function MyPost() {
         .catch((error) => {
           console.log(error);
         });
-    }, 10);
+    };
+    getMyPost();
   }, [uid]);
 
   const postComponents = myPosts.map((item) => {

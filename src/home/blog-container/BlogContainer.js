@@ -7,23 +7,20 @@ import axios from '../../api/axios';
 
 export default function BlogContainer() {
   const [posts, setPosts] = useState([]);
-  const [done, setDone] = useState(undefined);
-  // mount
+  const [done, setDone] = useState(false);
   useEffect(() => {
-    setTimeout(() => {
-      axios
+    const getPost = async () => {
+      await axios
         .get(`/getblogs`)
-        .then(function (response) {
-          // handle success
-          // console.log('here is my data', response.data);
+        .then((response) => {
           setPosts(response.data.blog);
           setDone(true);
         })
-        .catch(function (error) {
-          // handle error
+        .catch((error) => {
           console.log({ error });
         });
-    }, 10);
+    };
+    getPost();
   }, []);
 
   const postComponents = posts.map((item) => {
