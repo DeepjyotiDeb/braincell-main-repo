@@ -15,6 +15,7 @@ import SignUp from './signup/SignUp';
 
 const token = localStorage.getItem('token');
 const ProtectedRoute = ({ token, redirectPath = '/' }) => {
+  console.log('token', token);
   if (!token) {
     console.log('returning to homepage');
     return <Navigate to={redirectPath} replace />;
