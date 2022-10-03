@@ -16,6 +16,7 @@ code {
   min-height: 50vh !important;
 }
 .ck.ck-editor {
-  position: relative;
+  position: relative !important;
   width: -webkit-fill-available !important;
+  width: -moz-available !important;
 }
