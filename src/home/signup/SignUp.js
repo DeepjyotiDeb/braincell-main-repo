@@ -22,9 +22,8 @@ export default function SignUp(props) {
     event.preventDefault();
     setValues({ ...values, [event.target.name]: event.target.value });
   };
-  const handleSubmit = () => {
-    console.log(values);
-    axios
+  const handleSubmit = async () => {
+    await axios
       .post('user', {
         'name': values.username,
         'email': values.email,

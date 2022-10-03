@@ -27,7 +27,7 @@ export default function Home() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path='/' element={<BlogContainer></BlogContainer>}></Route>
+          <Route path='/' element={<BlogContainer />}></Route>
           <Route path='/view-post/:id' element={<SinglePost />}></Route>
           <Route path='/sign-up' element={<SignUp />}></Route>
           <Route element={<ProtectedRoute token={token} />}>

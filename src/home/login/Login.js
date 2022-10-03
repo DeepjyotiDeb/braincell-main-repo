@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Link, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import axios from '../../api/axios';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import SignUp from '../signup/SignUp';
 // const textfield = styled('TextField')({
 //   autoFocus: true,
@@ -56,9 +56,9 @@ export default function Login(props) {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     //     console.log('test values are:', username, password);
-    axios
+    await axios
       .post('/login', {
         'username': username,
         'password': password,
@@ -76,7 +76,7 @@ export default function Login(props) {
   };
 
   return (
-    <div>
+    <Box component='form' onSubmit={handleSubmit}>
       <Dialog open={openLogin} onClose={handleClose}>
         <DialogTitle>Login</DialogTitle>
         <DialogContent>
@@ -95,7 +95,6 @@ export default function Login(props) {
           />
           <TextField
             // onChange={handleChange}
-            autoFocus
             margin='dense'
             id='password'
             label='password'
@@ -110,7 +109,9 @@ export default function Login(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Login</Button>
+          <Button onClick={handleSubmit} type='submit'>
+            Login
+          </Button>
         </DialogActions>
         <DialogContentText
           sx={{ position: 'absolute', left: '10px', bottom: '10px' }}
@@ -128,6 +129,6 @@ export default function Login(props) {
         </DialogContentText>
       </Dialog>
       <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp}></SignUp>
-    </div>
+    </Box>
   );
 }
