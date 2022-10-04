@@ -42,22 +42,17 @@ export default function Login(props) {
   // }
 
   const handleLoginSuccess = (res) => {
-    console.log({ res });
-    if (res !== '') {
-      localStorage.setItem('token', res.data.user.token);
-      localStorage.setItem('id', res.data.user.id);
-      navigate('/');
-      handleClose();
-      setError(null);
-      // console.log("success",res.statusText,res.status.type)
-    } else {
-      console.log('fail', res);
-      // console.log(res.status)
-    }
+    localStorage.setItem('token', res.data.user.token);
+    localStorage.setItem('id', res.data.user.id);
+    navigate('/');
+    handleClose();
+    setError(null);
+    window.location.reload();
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     //     console.log('test values are:', username, password);
+    e.preventDefault();
     await axios
       .post('/login', {
         'username': username,
@@ -76,8 +71,13 @@ export default function Login(props) {
   };
 
   return (
-    <Box component='form' onSubmit={handleSubmit}>
-      <Dialog open={openLogin} onClose={handleClose}>
+    <Box>
+      <Dialog
+        open={openLogin}
+        onClose={handleClose}
+        component='form'
+        onSubmit={handleSubmit}
+      >
         <DialogTitle>Login</DialogTitle>
         <DialogContent>
           <TextField
@@ -109,9 +109,7 @@ export default function Login(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit} type='submit'>
-            Login
-          </Button>
+          <Button type='submit'>Login</Button>
         </DialogActions>
         <DialogContentText
           sx={{ position: 'absolute', left: '10px', bottom: '10px' }}

@@ -13,18 +13,20 @@ import {
 } from 'react-router-dom';
 import SignUp from './signup/SignUp';
 
-const token = localStorage.getItem('token');
-// console.log('token1', token);
-const ProtectedRoute = ({ token, redirectPath = '/' }) => {
-  // console.log('token2', token);
-  if (token) {
-    console.log('returning to homepage');
-    return <Outlet />;
-  }
-  return <Navigate to={redirectPath} replace />;
-};
-
 export default function Home() {
+  //on first login, the following portion before return does not run but runs after reload
+  const token = localStorage.getItem('token');
+  // console.log('token main , ', token);
+
+  const ProtectedRoute = ({ token, redirectPath = '/' }) => {
+    if (token) {
+      return <Outlet />;
+    } else {
+      // console.log('token', token, localStorage.getItem('token'));
+      return <Navigate to={redirectPath} replace />;
+    }
+  };
+
   return (
     <Router>
       <Navbar />
