@@ -197,7 +197,11 @@ export default function Navbar() {
         <Divider />
         <List></List>
       </Drawer>
-      <Login openLogin={openLogin} setOpenLogin={setOpenLogin}></Login>
+      <Login
+        openLogin={openLogin}
+        setOpenLogin={setOpenLogin}
+        setOpenSignUp={setOpenSignUp}
+      ></Login>
       <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp}></SignUp>
     </Box>
   );

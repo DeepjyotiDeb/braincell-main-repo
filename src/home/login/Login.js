@@ -9,8 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Link, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import axios from '../../api/axios';
-import { Box, Typography } from '@mui/material';
-import SignUp from '../signup/SignUp';
+import { Typography } from '@mui/material';
 // const textfield = styled('TextField')({
 //   autoFocus: true,
 //   margin:"dense",
@@ -28,8 +27,7 @@ export default function Login(props) {
   // const { openLogin: open, setOpenLogin: setOpen } = props;
   // const { openLogin: open = false, setOpenLogin: setOpen = () => {} } = props;
   let navigate = useNavigate();
-  const { openLogin, setOpenLogin } = props;
-  const [openSignUp, setOpenSignUp] = useState(false);
+  const { openLogin, setOpenLogin, setOpenSignUp } = props;
   // const [values, setValues] = useState({
   //   username: "tet",
   //   password:"",
@@ -71,62 +69,61 @@ export default function Login(props) {
   };
 
   return (
-    <Box>
-      <Dialog
-        open={openLogin}
-        onClose={handleClose}
-        component='form'
-        onSubmit={handleSubmit}
+    <Dialog
+      open={openLogin}
+      onClose={handleClose}
+      component='form'
+      onSubmit={handleSubmit}
+      aria-labelledby='simple-dialog-title'
+    >
+      <DialogTitle>Login</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          margin='dense'
+          id='username'
+          label='Username'
+          type='text'
+          fullWidth
+          variant='standard'
+          // onChange={handleChange}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required={true}
+        />
+        <TextField
+          // onChange={handleChange}
+          margin='dense'
+          id='password'
+          label='password'
+          type='password'
+          fullWidth
+          variant='standard'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required={true}
+        />
+        {error && <Typography color='error'>incorrect password</Typography>}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button type='submit'>Login</Button>
+      </DialogActions>
+      <DialogContentText
+        sx={{ position: 'absolute', left: '10px', bottom: '10px' }}
       >
-        <DialogTitle>Login</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin='dense'
-            id='username'
-            label='Username'
-            type='text'
-            fullWidth
-            variant='standard'
-            // onChange={handleChange}
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required={true}
-          />
-          <TextField
-            // onChange={handleChange}
-            margin='dense'
-            id='password'
-            label='password'
-            type='password'
-            fullWidth
-            variant='standard'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required={true}
-          />
-          {error && <Typography color='error'>incorrect password</Typography>}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button type='submit'>Login</Button>
-        </DialogActions>
-        <DialogContentText
-          sx={{ position: 'absolute', left: '10px', bottom: '10px' }}
+        Sign up{' '}
+        <Link
+          to='/'
+          onClick={() => {
+            handleClose();
+            setOpenSignUp(true);
+          }}
         >
-          Sign up{' '}
-          <Link
-            to='/'
-            onClick={() => {
-              setOpenSignUp(true);
-              handleClose();
-            }}
-          >
-            here
-          </Link>
-        </DialogContentText>
-      </Dialog>
-      <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp}></SignUp>
-    </Box>
+          here
+        </Link>
+      </DialogContentText>
+      {/* <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp}></SignUp> */}
+    </Dialog>
   );
 }
