@@ -51,7 +51,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const StyledButton = styled(Button)(() => ({
-  backgroundColor: '#02b7cb',
+  backgroundColor: '#a2a1a2',
   color: '#fff',
   '&:hover': {
     backgroundColor: '#fff',
@@ -78,7 +78,7 @@ export default function Navbar() {
     <Box sx={{ width: '100%' }}>
       <AppBar
         position='static'
-        sx={{ backgroundColor: '#02b7cb' }}
+        sx={{ backgroundColor: '#7d7d7d' }}
         // color='secondary'
       >
         <Toolbar>

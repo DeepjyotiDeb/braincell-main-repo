@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import ReactLoading from 'react-loading';
 import moment from 'moment';
 import axios from '../../api/axios';
@@ -21,6 +20,9 @@ export default function SinglePost() {
   const { id } = useParams(); // Reads the URL on the URL Bar and gets whatever is after ":"
   const [post, setPost] = useState({});
   const [done, setDone] = useState(undefined);
+  const editPost = () => {
+    navigate(`/edit-post/${post._id}`);
+  };
 
   const handleDelete = () => {
     console.log('id', id);
@@ -68,13 +70,15 @@ export default function SinglePost() {
             gap: 1,
           }}
         >
-          <Button variant='contained'>
-            <Link
-              to={`/edit-post/${post._id}`}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              edit post{' '}
-            </Link>
+          <Button
+            variant='contained'
+            sx={{
+              backgroundColor: '#a2a1a2',
+              '&:hover': { backgroundColor: '#7d7d7d' },
+            }}
+            onClick={editPost}
+          >
+            edit post{' '}
           </Button>
           <Button variant='contained' color='error' onClick={handleDelete}>
             delete post
