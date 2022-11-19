@@ -6,6 +6,24 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from '../../api/axios';
+import { forwardRef } from 'react';
+import { Slide, styled } from '@mui/material';
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
+
+const CustomDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    // padding: theme.spacing(2),
+    // minWidth: { md: '100vw' },
+    // width: { xs: '80vw', md: '60vw', lg: '80vw' },
+    // minWidth: { sm: '80vw', md: '60vw' },
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
 
 export default function SignUp(props) {
   const { openSignUp, setOpenSignUp } = props;
@@ -39,6 +57,7 @@ export default function SignUp(props) {
         onClose={handleClose}
         component='form'
         onSubmit={handleSubmit}
+        TransitionComponent={Transition}
       >
         <DialogTitle>Sign Up</DialogTitle>
         <DialogContent>

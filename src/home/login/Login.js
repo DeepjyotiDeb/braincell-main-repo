@@ -4,12 +4,12 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Link, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import axios from '../../api/axios';
 import { Slide, styled, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
@@ -30,16 +30,14 @@ const CustomDialog = styled(Dialog)(({ theme }) => ({
 export default function Login(props) {
   let navigate = useNavigate();
   const { openLogin, setOpenLogin, setOpenSignUp } = props;
-  // const [values, setValues] = useState({
-  //   username: "tet",
-  //   password:"",
-  // })
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  // const handleChange = (event) => {
-  //   setValues({...values, [event.target.name]: event.target.value})
-  // }
+  const [state, setState] = useState({
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState();
+  const handleChange = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
   const handleLoginSuccess = (res) => {
     localStorage.setItem('token', res.data.user.token);
@@ -51,18 +49,17 @@ export default function Login(props) {
   };
 
   const handleSubmit = async (e) => {
-    //     console.log('test values are:', username, password);
+    // console.log('test values are:', state.email, state.password);
     e.preventDefault();
     await axios
       .post('/login', {
-        'username': username,
-        'password': password,
+        'username': state.email,
+        'password': state.password,
       })
       .then(handleLoginSuccess)
-      // .then(() => navigate('/'))
       .catch((error) => {
-        console.log(error, 'not working');
-        setError(error);
+        console.log({ error }, 'not working');
+        setError(error.response.data.message);
       });
   };
 
@@ -76,36 +73,68 @@ export default function Login(props) {
         open={openLogin}
         onClose={handleClose}
         TransitionComponent={Transition}
+        component='form'
+        onSubmit={handleSubmit}
       >
         <DialogTitle sx={{ width: { xs: '65vw', md: '30vw' } }}>
           Login
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ mb: 0, pb: 0 }}>
           {/* <DialogContentText variant='h5'>Login</DialogContentText> */}
           <TextField
             autoFocus
             margin='dense'
-            id='name'
+            name='email'
             label='Email Address'
             type='email'
             fullWidth
             variant='filled'
+            onChange={handleChange}
           />
           <TextField
             margin='dense'
-            id='password'
+            name='password'
             label='Password'
             type='password'
             fullWidth
             variant='filled'
+            onChange={handleChange}
+            sx={{ mb: 0 }}
           />
         </DialogContent>
-        <Typography sx={{ ml: '1.5rem' }}>
-          Not a user? Click <Link>here</Link> to Sign Up!
-        </Typography>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Login</Button>
+        <Box sx={{ width: { md: '30rem', mt: 0 } }}>
+          {error && (
+            <Typography
+              sx={{
+                ml: '1.5rem',
+                lineBreak: 'auto',
+                color: 'red',
+                fontSize: 14,
+              }}
+            >
+              {error}
+            </Typography>
+          )}
+          <Typography sx={{ ml: '1.5rem' }}>
+            Not a user? Click{' '}
+            <Link
+              onClick={() => {
+                setOpenLogin(false);
+                setOpenSignUp(true);
+              }}
+            >
+              here
+            </Link>{' '}
+            to Sign Up!
+          </Typography>
+        </Box>
+        <DialogActions sx={{ mb: 1 }}>
+          <Button onClick={handleClose} variant='outlined'>
+            Cancel
+          </Button>
+          <Button type='submit' variant='outlined'>
+            Login
+          </Button>
         </DialogActions>
       </CustomDialog>
     </div>
