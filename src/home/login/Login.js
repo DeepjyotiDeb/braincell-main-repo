@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,23 +9,25 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Link, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import axios from '../../api/axios';
-import { Typography } from '@mui/material';
-// const textfield = styled('TextField')({
-//   autoFocus: true,
-//   margin:"dense",
-//   id:"name",
-//   label: "email",
-//   fullWidth: true,
-//   variant:"standard",
-// })
+import { Slide, styled, Typography } from '@mui/material';
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction='up' ref={ref} {...props} />;
+});
+
+const CustomDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    // padding: theme.spacing(2),
+    // minWidth: { md: '100vw' },
+    // width: { xs: '80vw', md: '60vw', lg: '80vw' },
+    // minWidth: { sm: '80vw', md: '60vw' },
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
 
 export default function Login(props) {
-  // const openLogin = props.openLogin;
-  // const setOpenLogin = props.setOpenLogin;
-
-  // const { openLogin = false, setOpenLogin = () => {} } = props;
-  // const { openLogin: open, setOpenLogin: setOpen } = props;
-  // const { openLogin: open = false, setOpenLogin: setOpen = () => {} } = props;
   let navigate = useNavigate();
   const { openLogin, setOpenLogin, setOpenSignUp } = props;
   // const [values, setValues] = useState({
@@ -69,61 +71,43 @@ export default function Login(props) {
   };
 
   return (
-    <Dialog
-      open={openLogin}
-      onClose={handleClose}
-      component='form'
-      onSubmit={handleSubmit}
-      aria-labelledby='simple-dialog-title'
-    >
-      <DialogTitle>Login</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin='dense'
-          id='username'
-          label='Username'
-          type='text'
-          fullWidth
-          variant='standard'
-          // onChange={handleChange}
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required={true}
-        />
-        <TextField
-          // onChange={handleChange}
-          margin='dense'
-          id='password'
-          label='password'
-          type='password'
-          fullWidth
-          variant='standard'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required={true}
-        />
-        {error && <Typography color='error'>incorrect password</Typography>}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button type='submit'>Login</Button>
-      </DialogActions>
-      <DialogContentText
-        sx={{ position: 'absolute', left: '10px', bottom: '10px' }}
+    <div className='login-box'>
+      <CustomDialog
+        open={openLogin}
+        onClose={handleClose}
+        TransitionComponent={Transition}
       >
-        Sign up{' '}
-        <Link
-          to='/'
-          onClick={() => {
-            handleClose();
-            setOpenSignUp(true);
-          }}
-        >
-          here
-        </Link>
-      </DialogContentText>
-      {/* <SignUp openSignUp={openSignUp} setOpenSignUp={setOpenSignUp}></SignUp> */}
-    </Dialog>
+        <DialogTitle sx={{ width: { xs: '65vw', md: '30vw' } }}>
+          Login
+        </DialogTitle>
+        <DialogContent>
+          {/* <DialogContentText variant='h5'>Login</DialogContentText> */}
+          <TextField
+            autoFocus
+            margin='dense'
+            id='name'
+            label='Email Address'
+            type='email'
+            fullWidth
+            variant='filled'
+          />
+          <TextField
+            margin='dense'
+            id='password'
+            label='Password'
+            type='password'
+            fullWidth
+            variant='filled'
+          />
+        </DialogContent>
+        <Typography sx={{ ml: '1.5rem' }}>
+          Not a user? Click <Link>here</Link> to Sign Up!
+        </Typography>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Login</Button>
+        </DialogActions>
+      </CustomDialog>
+    </div>
   );
 }
