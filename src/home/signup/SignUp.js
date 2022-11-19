@@ -8,6 +8,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import axios from '../../api/axios';
 import { forwardRef } from 'react';
 import { Slide, styled } from '@mui/material';
+import { useState } from 'react';
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction='up' ref={ref} {...props} />;
@@ -30,10 +31,9 @@ export default function SignUp(props) {
   const handleClose = () => {
     setOpenSignUp(false);
   };
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     username: '',
     email: '',
-    password: '',
     password2: '',
   });
   const handleChange = (event) => {
@@ -58,58 +58,38 @@ export default function SignUp(props) {
         component='form'
         onSubmit={handleSubmit}
         TransitionComponent={Transition}
+        maxWidth='xs'
+        fullWidth={true}
       >
         <DialogTitle>Sign Up</DialogTitle>
-        <DialogContent>
+        <DialogContent
+          sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
+        >
           <TextField
             autoFocus
-            margin='dense'
-            id='username'
-            label='enter your user name'
+            label='Enter a username'
             name='username'
             type='text'
-            fullWidth
             required
-            variant='standard'
+            variant='filled'
             onChange={handleChange}
             value={values.username}
           />
           <TextField
-            autoFocus
-            id='email'
-            margin='dense'
-            label='enter your email'
+            label='Enter your email'
             type='email'
             name='email'
-            fullWidth
-            variant='standard'
+            variant='filled'
             onChange={handleChange}
             value={values.email}
             required
           />
           <TextField
-            autoFocus
-            id='password'
-            margin='dense'
-            label='enter new password'
-            type='text'
-            name='password'
-            fullWidth
             required
-            variant='standard'
-            onChange={handleChange}
-            value={values.password}
-          />
-          <TextField
-            autoFocus
-            id='password2'
-            margin='dense'
-            required
-            label='retype password'
+            label='Create a password'
             type='password'
             name='password2'
-            fullWidth
-            variant='standard'
+            variant='filled'
             onChange={handleChange}
             value={values.password2}
           />
