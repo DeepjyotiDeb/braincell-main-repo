@@ -78,7 +78,7 @@ export default function Navbar() {
     <Box sx={{ width: '100%' }}>
       <AppBar
         position='static'
-        sx={{ backgroundColor: '#7d7d7d' }}
+        sx={{ backgroundColor: '#3a3a3a' }}
         // color='secondary'
       >
         <Toolbar>
@@ -114,7 +114,11 @@ export default function Navbar() {
               <StyledButton
                 color='inherit'
                 variant='outlined'
-                sx={{ position: 'absolute', right: '10px' }}
+                sx={{
+                  position: 'absolute',
+                  right: '10px',
+                  backgroundColor: '#212121',
+                }}
                 onClick={() => setOpenLogin(true)}
               >
                 Login
@@ -122,7 +126,11 @@ export default function Navbar() {
               <StyledButton
                 color='inherit'
                 variant='outlined'
-                sx={{ position: 'absolute', right: '110px' }}
+                sx={{
+                  position: 'absolute',
+                  right: '110px',
+                  backgroundColor: '#212121',
+                }}
                 onClick={() => setOpenSignUp(true)}
               >
                 SignUp
